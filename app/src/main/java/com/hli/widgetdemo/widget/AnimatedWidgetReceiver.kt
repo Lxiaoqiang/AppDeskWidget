@@ -21,24 +21,19 @@ class AnimatedWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-        Log.d(TAG, "onEnabled - First widget added, starting animation via WorkManager")
-        StartAnimationWorker.enqueue(context.applicationContext)
+        Log.d(TAG, "onEnabled - First widget added, starting animation")
+        WidgetAnimationWorker.enqueue(context.applicationContext)
     }
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        Log.d(TAG, "onDisabled - Last widget removed, stopping animation service")
-        WidgetAnimationService.stop(context)
+        Log.d(TAG, "onDisabled - Last widget removed, stopping animation")
+        WidgetAnimationWorker.cancel(context.applicationContext)
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
         super.onDeleted(context, appWidgetIds)
         Log.d(TAG, "onDeleted - Widget IDs: ${appWidgetIds.joinToString()}")
-        CoroutineScope(Dispatchers.IO).launch {
-            appWidgetIds.forEach { widgetId ->
-                WidgetStateManager.removeWidgetStyle(context, widgetId)
-            }
-        }
     }
 
     override fun onUpdate(
@@ -49,7 +44,7 @@ class AnimatedWidgetReceiver : GlanceAppWidgetReceiver() {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         Log.d(TAG, "onUpdate - Widget IDs: ${appWidgetIds.joinToString()}")
 
-        // Initialize widget state and start animation service
+        // Initialize widget state and start animation
         CoroutineScope(Dispatchers.IO).launch {
             val glanceManager = GlanceAppWidgetManager(context)
 
@@ -57,7 +52,9 @@ class AnimatedWidgetReceiver : GlanceAppWidgetReceiver() {
                 try {
                     val glanceId = glanceManager.getGlanceIdBy(appWidgetId)
 
-                    // Initialize state for this widget
+                    // Only initialize frame counter, not style
+                    // Style is set by WidgetPinReceiver for app-pinned widgets
+                    // For desktop-added widgets, AnimatedWidget defaults to JERRY (ordinal 0)
                     updateAppWidgetState(
                         context = context,
                         definition = WidgetGlanceStateDefinition,
@@ -67,21 +64,20 @@ class AnimatedWidgetReceiver : GlanceAppWidgetReceiver() {
                             if (!contains(WidgetGlanceStateDefinition.Keys.CURRENT_FRAME)) {
                                 this[WidgetGlanceStateDefinition.Keys.CURRENT_FRAME] = 0
                             }
-                            if (!contains(WidgetGlanceStateDefinition.Keys.WIDGET_STYLE)) {
-                                this[WidgetGlanceStateDefinition.Keys.WIDGET_STYLE] = 0
-                            }
+                            // Don't initialize WIDGET_STYLE here to avoid race condition
+                            // with WidgetPinReceiver which sets the correct style
                         }
                     }
 
-                    Log.d(TAG, "Widget $appWidgetId state initialized")
+                    Log.d(TAG, "Widget $appWidgetId frame counter initialized")
                 } catch (e: Exception) {
                     Log.e(TAG, "Error initializing widget $appWidgetId", e)
                 }
             }
 
-            // Start animation service via WorkManager
-            Log.d(TAG, "Starting animation service via WorkManager from onUpdate")
-            StartAnimationWorker.enqueue(context.applicationContext)
+            // Start animation
+            Log.d(TAG, "Starting animation from onUpdate")
+            WidgetAnimationWorker.enqueue(context.applicationContext)
         }
     }
 }

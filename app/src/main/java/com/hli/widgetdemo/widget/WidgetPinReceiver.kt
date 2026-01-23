@@ -54,16 +54,16 @@ class WidgetPinReceiver : BroadcastReceiver() {
                         AnimatedWidget().update(context, glanceId)
                         Log.d(TAG, "Widget updated")
 
-                        // Start animation service
-                        StartAnimationWorker.enqueue(context.applicationContext)
-                        Log.d(TAG, "Animation service start requested via WorkManager")
+                        // Start animation
+                        WidgetAnimationWorker.enqueue(context.applicationContext)
+                        Log.d(TAG, "Animation started")
                     } catch (e: Exception) {
                         Log.e(TAG, "Error in onReceive", e)
                     }
                 }
             } else {
-                Log.w(TAG, "Invalid appWidgetId, starting service anyway")
-                StartAnimationWorker.enqueue(context.applicationContext)
+                Log.w(TAG, "Invalid appWidgetId, starting animation anyway")
+                WidgetAnimationWorker.enqueue(context.applicationContext)
             }
         }
     }

@@ -8,7 +8,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
+import com.hli.widgetdemo.R
 
 object WidgetPinHelper {
 
@@ -41,8 +43,15 @@ object WidgetPinHelper {
         val widgetProvider = ComponentName(context, AnimatedWidgetReceiver::class.java)
         Log.d(TAG, "Widget provider: $widgetProvider")
 
+        // Create preview RemoteViews with the selected style's preview image
+        val previewViews = RemoteViews(context.packageName, R.layout.widget_preview_layout).apply {
+            setImageViewResource(R.id.preview_image, style.previewResId)
+        }
+
         val extras = Bundle().apply {
             putInt(EXTRA_WIDGET_STYLE, style.ordinal)
+            // Set the preview image for the pin dialog
+            putParcelable(AppWidgetManager.EXTRA_APPWIDGET_PREVIEW, previewViews)
         }
 
         val successCallback = createPinSuccessCallback(context, style)
