@@ -5,8 +5,8 @@
     android:targetCellWidth="2"
     android:targetCellHeight="2"
     android:updatePeriodMillis="0"
-    android:previewImage="@drawable/jerry_frame_01"
+    android:previewImage="@drawable/preview_circle"
     android:initialLayout="@layout/widget_initial_layout"
     android:resizeMode="none"
     android:widgetCategory="home_screen"
-    android:description="@string/widget_jerry_description" />
+    android:description="@string/widget_slot_4_description" />

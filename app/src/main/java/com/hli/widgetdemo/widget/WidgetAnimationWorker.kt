@@ -77,26 +77,37 @@ class WidgetAnimationWorker(
     private suspend fun updateWidgets(frameIndex: Int) {
         try {
             val manager = GlanceAppWidgetManager(applicationContext)
-            val glanceIds = manager.getGlanceIds(AnimatedWidget::class.java)
 
-            if (glanceIds.isEmpty()) {
-                Log.d(TAG, "No widgets found, stopping")
-                return
-            }
+            // 更新所有6个槽位的widgets
+            (1..6).forEach { slotIndex ->
+                val glanceIds = manager.getGlanceIds(SlotWidget(slotIndex)::class.java)
 
-            glanceIds.forEach { glanceId ->
-                updateAppWidgetState(
-                    context = applicationContext,
-                    definition = WidgetGlanceStateDefinition,
-                    glanceId = glanceId
-                ) { prefs ->
-                    prefs.toMutablePreferences().apply {
-                        this[WidgetGlanceStateDefinition.Keys.CURRENT_FRAME] = frameIndex
+                if (glanceIds.isEmpty()) {
+                    return@forEach
+                }
+
+                glanceIds.forEach { glanceId ->
+                    updateAppWidgetState(
+                        context = applicationContext,
+                        definition = SlotWidgetStateDefinition,
+                        glanceId = glanceId
+                    ) { prefs ->
+                        val modelId = prefs[SlotWidgetStateDefinition.Keys.MODEL_ID] ?: ""
+
+                        // 只有分配了模型的widget才更新帧
+                        if (modelId.isNotEmpty()) {
+                            prefs.toMutablePreferences().apply {
+                                this[SlotWidgetStateDefinition.Keys.CURRENT_FRAME] = frameIndex
+                            }
+                        } else {
+                            prefs
+                        }
                     }
                 }
-            }
 
-            AnimatedWidget().updateAll(applicationContext)
+                // 触发该槽位的所有widget更新
+                SlotWidget(slotIndex).updateAll(applicationContext)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error updating widgets", e)
         }

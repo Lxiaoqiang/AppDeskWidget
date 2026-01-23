@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.hli.widgetdemo.ui.screen.WidgetPreviewScreen
+import com.hli.widgetdemo.ui.screen.SlotManagementScreen
 import com.hli.widgetdemo.ui.theme.WidgetDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WidgetDemoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    WidgetPreviewScreen(
+                    SlotManagementScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

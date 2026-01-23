@@ -3,13 +3,16 @@
     <string name="widget_description">Animated widget with multiple styles</string>
     <string name="widget_name">Animated Widget</string>
 
-    <!-- Widget specific names -->
-    <string name="widget_jerry_name">Jerry Mouse</string>
-    <string name="widget_jerry_description">Animated Jerry Mouse widget</string>
+    <!-- Widget Slot descriptions -->
+    <string name="widget_slot_1_description">Widget Slot 1 - Assign your model in app</string>
+    <string name="widget_slot_2_description">Widget Slot 2 - Assign your model in app</string>
+    <string name="widget_slot_3_description">Widget Slot 3 - Assign your model in app</string>
+    <string name="widget_slot_4_description">Widget Slot 4 - Assign your model in app</string>
+    <string name="widget_slot_5_description">Widget Slot 5 - Assign your model in app</string>
+    <string name="widget_slot_6_description">Widget Slot 6 - Assign your model in app</string>
 
-    <string name="widget_star_name">Twinkle Star</string>
-    <string name="widget_star_description">Animated twinkling star widget</string>
-
-    <string name="widget_heart_name">Beating Heart</string>
-    <string name="widget_heart_description">Animated beating heart widget</string>
+    <!-- Model names (using existing styles) -->
+    <string name="model_jerry_name">Jerry Mouse</string>
+    <string name="model_star_name">Twinkle Star</string>
+    <string name="model_heart_name">Beating Heart</string>
 </resources>

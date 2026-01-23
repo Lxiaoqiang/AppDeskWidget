@@ -25,50 +25,77 @@
             </intent-filter>
         </activity>
 
-        <!-- Widget Receivers -->
+        <!-- Widget Slot Receivers (6 slots) -->
         <receiver
-            android:name=".widget.AnimatedWidgetJerryReceiver"
+            android:name=".widget.WidgetSlot1Receiver"
             android:exported="true"
-            android:label="@string/widget_jerry_name">
+            android:label="Widget Slot 1">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_jerry_info" />
+                android:resource="@xml/widget_slot_1_info" />
         </receiver>
 
         <receiver
-            android:name=".widget.AnimatedWidgetStarReceiver"
+            android:name=".widget.WidgetSlot2Receiver"
             android:exported="true"
-            android:label="@string/widget_star_name">
+            android:label="Widget Slot 2">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_star_info" />
+                android:resource="@xml/widget_slot_2_info" />
         </receiver>
 
         <receiver
-            android:name=".widget.AnimatedWidgetHeartReceiver"
+            android:name=".widget.WidgetSlot3Receiver"
             android:exported="true"
-            android:label="@string/widget_heart_name">
+            android:label="Widget Slot 3">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_heart_info" />
+                android:resource="@xml/widget_slot_3_info" />
         </receiver>
 
-        <!-- Widget Pin Callback Receiver -->
         <receiver
-            android:name=".widget.WidgetPinReceiver"
-            android:exported="false">
+            android:name=".widget.WidgetSlot4Receiver"
+            android:exported="true"
+            android:label="Widget Slot 4">
             <intent-filter>
-                <action android:name="com.hli.widgetdemo.WIDGET_PINNED" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_slot_4_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.WidgetSlot5Receiver"
+            android:exported="true"
+            android:label="Widget Slot 5">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_slot_5_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.WidgetSlot6Receiver"
+            android:exported="true"
+            android:label="Widget Slot 6">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_slot_6_info" />
         </receiver>
 
     </application>
