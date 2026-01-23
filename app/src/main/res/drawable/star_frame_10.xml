@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Star Frame 10 - Smallest -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M60,22 L64,46 L88,46 L69,59 L76,83 L60,69 L44,83 L51,59 L32,46 L56,46 Z"/>
+    <path
+        android:fillColor="#FFF8DC"
+        android:pathData="M60,32 L62,43 L73,43 L64,50 L67,61 L60,55 L53,61 L56,50 L47,43 L58,43 Z"/>
+</vector>

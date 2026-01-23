@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Star Frame 5 - Bright flash -->
+    <path
+        android:fillColor="#FFFF00"
+        android:pathData="M60,5 L72,40 L105,40 L78,63 L88,100 L60,80 L32,100 L42,63 L15,40 L48,40 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,22 L67,38 L83,38 L69,50 L75,66 L60,56 L45,66 L51,50 L37,38 L53,38 Z"/>
+</vector>

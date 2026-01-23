@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Heart Frame 1 - Small -->
+    <path
+        android:fillColor="#FF1493"
+        android:pathData="M60,95 C60,95 25,65 25,45 C25,30 35,25 45,25 C52,25 58,30 60,35 C62,30 68,25 75,25 C85,25 95,30 95,45 C95,65 60,95 60,95 Z"/>
+    <path
+        android:fillColor="#FF69B4"
+        android:pathData="M45,35 C40,35 35,40 35,48 C35,50 36,52 37,54"/>
+</vector>

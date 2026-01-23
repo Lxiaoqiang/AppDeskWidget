@@ -1,0 +1,66 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Jerry Mouse Frame 2 - Slight movement -->
+    <!-- Body (slightly shifted) -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M62,93 C47,93 37,78 37,63 C37,43 47,33 62,33 C77,33 87,43 87,63 C87,78 77,93 62,93"/>
+    <!-- Belly -->
+    <path
+        android:fillColor="#F5DEB3"
+        android:pathData="M62,88 C52,88 45,76 45,65 C45,53 52,46 62,46 C72,46 79,53 79,65 C79,76 72,88 62,88"/>
+    <!-- Head -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M62,43 C47,43 37,33 37,23 C37,10 47,3 62,3 C77,3 87,10 87,23 C87,33 77,43 62,43"/>
+    <!-- Left Ear -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M37,18 C32,8 27,3 22,6 C17,10 20,20 27,26 C32,30 37,26 37,18"/>
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M34,16 C30,10 27,7 24,9 C21,12 23,19 28,23 C31,25 34,22 34,16"/>
+    <!-- Right Ear -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M87,18 C92,8 97,3 102,6 C107,10 104,20 97,26 C92,30 87,26 87,18"/>
+    <path
+        android:fillColor="#FFB6C1"
+        android:pathData="M90,16 C94,10 97,7 100,9 C103,12 101,19 96,23 C93,25 90,22 90,16"/>
+    <!-- Eyes -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,20 C52,16 55,13 59,13 C63,13 66,16 66,20 C66,24 63,27 59,27 C55,27 52,24 52,20"/>
+    <path
+        android:fillColor="#000000"
+        android:pathData="M57,20 C57,18 58,17 60,17 C62,17 63,18 63,20 C63,22 62,23 60,23 C58,23 57,22 57,20"/>
+    <!-- Nose -->
+    <path
+        android:fillColor="#FF69B4"
+        android:pathData="M62,30 C59,30 57,32 57,34 C57,36 59,38 62,38 C65,38 67,36 67,34 C67,32 65,30 62,30"/>
+    <!-- Left Arm (raised) -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M40,50 C34,48 28,50 28,55 C28,58 32,60 38,58 C42,56 42,52 40,50"/>
+    <!-- Right Arm -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M84,53 C90,56 94,63 92,68 C90,70 86,68 82,63 C80,60 82,53 84,53"/>
+    <!-- Left Leg (lifted) -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M47,88 L40,100 C40,103 43,105 46,105 L50,105 C53,105 53,100 50,95 L50,88"/>
+    <!-- Right Leg -->
+    <path
+        android:fillColor="#C4A484"
+        android:pathData="M77,88 L80,103 C80,106 77,108 74,108 L70,108 C67,108 67,103 70,98 L72,88"/>
+    <!-- Tail -->
+    <path
+        android:fillColor="#C4A484"
+        android:strokeColor="#A08060"
+        android:strokeWidth="3"
+        android:pathData="M62,93 Q72,98 77,93 Q87,83 92,88"/>
+</vector>

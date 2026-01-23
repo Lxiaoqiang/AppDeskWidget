@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Heart Frame 5 - Bright pulse -->
+    <path
+        android:fillColor="#FF0066"
+        android:pathData="M60,108 C60,108 8,70 8,38 C8,16 24,8 38,8 C49,8 58,17 60,26 C62,17 71,8 82,8 C96,8 112,16 112,38 C112,70 60,108 60,108 Z"/>
+    <path
+        android:fillColor="#FF69B4"
+        android:pathData="M38,22 C29,22 20,31 20,44 C20,50 22,56 26,62"/>
+</vector>

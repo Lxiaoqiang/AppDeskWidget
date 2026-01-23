@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Star Frame 2 - Growing -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M60,18 L66,44 L92,44 L71,60 L80,87 L60,72 L40,87 L49,60 L28,44 L54,44 Z"/>
+    <path
+        android:fillColor="#FFF8DC"
+        android:pathData="M60,28 L64,41 L77,41 L66,50 L70,63 L60,55 L50,63 L54,50 L43,41 L56,41 Z"/>
+</vector>

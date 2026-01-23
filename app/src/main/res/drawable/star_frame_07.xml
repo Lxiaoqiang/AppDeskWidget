@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+    <!-- Star Frame 7 - Shrinking -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M60,15 L68,43 L95,43 L73,61 L82,90 L60,74 L38,90 L47,61 L25,43 L52,43 Z"/>
+    <path
+        android:fillColor="#FFF8DC"
+        android:pathData="M60,26 L65,40 L79,40 L67,50 L72,64 L60,56 L48,64 L53,50 L41,40 L55,40 Z"/>
+</vector>
