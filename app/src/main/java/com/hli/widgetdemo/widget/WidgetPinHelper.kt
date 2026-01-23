@@ -40,7 +40,13 @@ object WidgetPinHelper {
             return false
         }
 
-        val widgetProvider = ComponentName(context, AnimatedWidgetReceiver::class.java)
+        // Select the correct receiver based on the widget style
+        val receiverClass = when (style) {
+            WidgetPreviewStyle.STYLE_JERRY -> AnimatedWidgetJerryReceiver::class.java
+            WidgetPreviewStyle.STYLE_STAR -> AnimatedWidgetStarReceiver::class.java
+            WidgetPreviewStyle.STYLE_HEART -> AnimatedWidgetHeartReceiver::class.java
+        }
+        val widgetProvider = ComponentName(context, receiverClass)
         Log.d(TAG, "Widget provider: $widgetProvider")
 
         // Create preview RemoteViews with the selected style's preview image

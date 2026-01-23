@@ -2,4 +2,14 @@
     <string name="app_name">WidgetDemo</string>
     <string name="widget_description">Animated widget with multiple styles</string>
     <string name="widget_name">Animated Widget</string>
+
+    <!-- Widget specific names -->
+    <string name="widget_jerry_name">Jerry Mouse</string>
+    <string name="widget_jerry_description">Animated Jerry Mouse widget</string>
+
+    <string name="widget_star_name">Twinkle Star</string>
+    <string name="widget_star_description">Animated twinkling star widget</string>
+
+    <string name="widget_heart_name">Beating Heart</string>
+    <string name="widget_heart_description">Animated beating heart widget</string>
 </resources>

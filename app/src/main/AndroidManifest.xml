@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -27,17 +25,41 @@
             </intent-filter>
         </activity>
 
-        <!-- Widget Receiver -->
+        <!-- Widget Receivers -->
         <receiver
-            android:name=".widget.AnimatedWidgetReceiver"
+            android:name=".widget.AnimatedWidgetJerryReceiver"
             android:exported="true"
-            android:label="@string/widget_name">
+            android:label="@string/widget_jerry_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/animated_widget_info" />
+                android:resource="@xml/widget_jerry_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AnimatedWidgetStarReceiver"
+            android:exported="true"
+            android:label="@string/widget_star_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_star_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.AnimatedWidgetHeartReceiver"
+            android:exported="true"
+            android:label="@string/widget_heart_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_heart_info" />
         </receiver>
 
         <!-- Widget Pin Callback Receiver -->
