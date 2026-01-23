@@ -49,16 +49,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Animation Service -->
-        <service
-            android:name=".widget.WidgetAnimationService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="widget_animation" />
-        </service>
-
     </application>
 
 </manifest>

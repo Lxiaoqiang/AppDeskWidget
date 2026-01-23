@@ -5,7 +5,7 @@
     android:targetCellWidth="2"
     android:targetCellHeight="2"
     android:updatePeriodMillis="0"
-    android:previewImage="@drawable/jerry_frame_01"
+    android:previewImage="@drawable/widget_preview_combined"
     android:initialLayout="@layout/widget_initial_layout"
     android:resizeMode="none"
     android:widgetCategory="home_screen"
