@@ -22,12 +22,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +42,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hli.widgetdemo.widget.WidgetPinHelper
 import com.hli.widgetdemo.widget.WidgetPreviewStyle
+import com.hli.widgetdemo.widget.gif.GifFrameExtractor
+import kotlinx.coroutines.launch
 
 @Composable
 fun WidgetPreviewScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var selectedStyle by remember { mutableStateOf(WidgetPreviewStyle.STYLE_JERRY) }
+
+    // GIF related state
+    //https://wishwish-dev.s3.us-east-2.amazonaws.com/collection/image/did:privy:cmhwopy3k00h4l10d4q5v8wkz/yot034w13ogs45ch.gif
+    var gifUrl by remember { mutableStateOf("https://raw.githubusercontent.com/nicehorse06/gif-test/main/test.gif") }
+    var isLoading by remember { mutableStateOf(false) }
+    var framesReady by remember { mutableStateOf(false) }
+    var frameCount by remember { mutableStateOf(0) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
@@ -54,36 +68,101 @@ fun WidgetPreviewScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Choose Widget Style",
+            text = "GIF Widget Test",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 24.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp)
+        // GIF URL input
+        OutlinedTextField(
+            value = gifUrl,
+            onValueChange = {
+                gifUrl = it
+                framesReady = false
+                errorMessage = null
+            },
+            label = { Text("GIF URL") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Download button
+        Button(
+            onClick = {
+                scope.launch {
+                    isLoading = true
+                    errorMessage = null
+                    framesReady = false
+
+                    val extractor = GifFrameExtractor(context)
+                    val gifId = gifUrl.hashCode().toString()
+
+                    val result = extractor.extractFrames(
+                        gifUrl = gifUrl,
+                        gifId = gifId,
+                        maxFrames = 30,
+                        maxDimension = 200
+                    )
+
+                    result.onSuccess { extractionResult ->
+                        frameCount = extractionResult.frameCount
+                        framesReady = true
+                        Toast.makeText(
+                            context,
+                            "Extracted ${extractionResult.frameCount} frames",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }.onFailure { error ->
+                        errorMessage = error.message ?: "Download failed"
+                    }
+
+                    isLoading = false
+                }
+            },
+            enabled = !isLoading && gifUrl.isNotBlank(),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            items(WidgetPreviewStyle.entries) { style ->
-                WidgetPreviewCard(
-                    style = style,
-                    isSelected = style == selectedStyle,
-                    onClick = { selectedStyle = style }
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
+            } else {
+                Text("Download & Extract Frames")
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        // Status display
+        if (errorMessage != null) {
+            Text(
+                text = "Error: $errorMessage",
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
-        SelectedWidgetPreview(style = selectedStyle)
+        if (framesReady) {
+            Text(
+                text = "Ready: $frameCount frames extracted",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
+        // Add to home screen button
         Button(
             onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (WidgetPinHelper.isPinWidgetSupported(context)) {
-                        val success = WidgetPinHelper.requestPinWidget(context, selectedStyle)
+                        val gifId = gifUrl.hashCode().toString()
+                        val success = WidgetPinHelper.requestPinViewFlipperWidget(context, gifId)
                         if (!success) {
                             Toast.makeText(
                                 context,
@@ -106,6 +185,7 @@ fun WidgetPreviewScreen(
                     ).show()
                 }
             },
+            enabled = framesReady,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -120,7 +200,7 @@ fun WidgetPreviewScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "The widget will animate at 10fps",
+            text = "GIF Animation Widget (ViewFlipper)",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

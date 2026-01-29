@@ -27,6 +27,55 @@ object WidgetPinHelper {
         return supported
     }
 
+    /**
+     * Request to pin the ViewFlipper GIF widget
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun requestPinViewFlipperWidget(context: Context, gifId: String): Boolean {
+        Log.d(TAG, "requestPinViewFlipperWidget: gifId=$gifId")
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+
+        if (!appWidgetManager.isRequestPinAppWidgetSupported) {
+            Log.w(TAG, "Pin widget not supported")
+            return false
+        }
+
+        val widgetProvider = ComponentName(context, ViewFlipperWidgetProvider::class.java)
+        Log.d(TAG, "Widget provider: $widgetProvider")
+
+        // Pass gifId to widget via extras
+        val extras = Bundle().apply {
+            putString(EXTRA_GIF_ID, gifId)
+        }
+
+        val successCallback = createViewFlipperPinCallback(context, gifId)
+
+        val result = appWidgetManager.requestPinAppWidget(
+            widgetProvider,
+            extras,
+            successCallback
+        )
+        Log.d(TAG, "requestPinAppWidget result: $result")
+        return result
+    }
+
+    private fun createViewFlipperPinCallback(
+        context: Context,
+        gifId: String
+    ): PendingIntent {
+        val intent = Intent(context, ViewFlipperWidgetProvider::class.java).apply {
+            action = ACTION_VIEWFLIPPER_PINNED
+            putExtra(EXTRA_GIF_ID, gifId)
+        }
+
+        return PendingIntent.getBroadcast(
+            context,
+            gifId.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun requestPinWidget(
         context: Context,
@@ -83,5 +132,7 @@ object WidgetPinHelper {
     }
 
     const val ACTION_WIDGET_PINNED = "com.hli.widgetdemo.WIDGET_PINNED"
+    const val ACTION_VIEWFLIPPER_PINNED = "com.hli.widgetdemo.VIEWFLIPPER_PINNED"
     const val EXTRA_WIDGET_STYLE = "extra_widget_style"
+    const val EXTRA_GIF_ID = "extra_gif_id"
 }

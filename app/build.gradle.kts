@@ -62,6 +62,13 @@ dependencies {
     // WorkManager for background tasks
     implementation(libs.androidx.work.runtime)
 
+    // Coil for image loading and GIF parsing
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
+
+    // OkHttp for network requests
+    implementation(libs.okhttp)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
