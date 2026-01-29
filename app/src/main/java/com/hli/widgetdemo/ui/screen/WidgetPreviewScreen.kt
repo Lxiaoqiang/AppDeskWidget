@@ -60,6 +60,7 @@ fun WidgetPreviewScreen(
     var framesReady by remember { mutableStateOf(false) }
     var frameCount by remember { mutableStateOf(0) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var currentGifId by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
@@ -110,6 +111,7 @@ fun WidgetPreviewScreen(
                     result.onSuccess { extractionResult ->
                         frameCount = extractionResult.frameCount
                         framesReady = true
+                        currentGifId = gifId
                         Toast.makeText(
                             context,
                             "Extracted ${extractionResult.frameCount} frames",
@@ -133,6 +135,42 @@ fun WidgetPreviewScreen(
             } else {
                 Text("Download & Extract Frames")
             }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Load from assets button
+        Button(
+            onClick = {
+                scope.launch {
+                    isLoading = true
+                    errorMessage = null
+                    framesReady = false
+
+                    val extractor = GifFrameExtractor(context)
+
+                    val result = extractor.loadFramesFromAssets("gif_frames")
+
+                    result.onSuccess { (extractionResult, gifId) ->
+                        frameCount = extractionResult.frameCount
+                        framesReady = true
+                        currentGifId = gifId
+                        Toast.makeText(
+                            context,
+                            "Loaded ${extractionResult.frameCount} frames from assets",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }.onFailure { error ->
+                        errorMessage = error.message ?: "Failed to load from assets"
+                    }
+
+                    isLoading = false
+                }
+            },
+            enabled = !isLoading,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Load from Assets")
         }
 
         // Status display
@@ -161,7 +199,7 @@ fun WidgetPreviewScreen(
             onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     if (WidgetPinHelper.isPinWidgetSupported(context)) {
-                        val gifId = gifUrl.hashCode().toString()
+                        val gifId = currentGifId ?: return@Button
                         val success = WidgetPinHelper.requestPinViewFlipperWidget(context, gifId)
                         if (!success) {
                             Toast.makeText(
@@ -185,7 +223,7 @@ fun WidgetPreviewScreen(
                     ).show()
                 }
             },
-            enabled = framesReady,
+            enabled = framesReady && currentGifId != null,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),

@@ -2,6 +2,7 @@ package com.hli.widgetdemo.widget.gif
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Movie
 import android.util.Log
@@ -74,6 +75,89 @@ class GifFrameExtractor(private val context: Context) {
         val frameCount: Int,
         val originalFrameDelay: Int
     )
+
+    /**
+     * Load frames from assets folder (for local testing)
+     * Put your PNG frames in: assets/gif_frames/frame_000.png, frame_001.png, etc.
+     * Returns a fixed gifId that can be used to retrieve the frames later.
+     */
+    suspend fun loadFramesFromAssets(
+        assetFolder: String = "gif_frames",
+        maxDimension: Int = MAX_FRAME_DIMENSION
+    ): Result<Pair<ExtractionResult, String>> = withContext(Dispatchers.IO) {
+        try {
+            Log.d(TAG, "Loading frames from assets: $assetFolder")
+
+            val assetManager = context.assets
+            val files = assetManager.list(assetFolder)
+                ?.filter { it.endsWith(".png") || it.endsWith(".jpg") }
+                ?.sorted()
+                ?: emptyList()
+
+            if (files.isEmpty()) {
+                return@withContext Result.failure(IllegalStateException("No frames found in assets/$assetFolder"))
+            }
+
+            Log.d(TAG, "Found ${files.size} frames in assets")
+
+            // Use a fixed gifId for assets
+            val gifId = "assets_$assetFolder"
+
+            // Copy frames to cache directory
+            val cacheDir = File(context.filesDir, "$FRAME_CACHE_DIR/$gifId")
+            // Clear old cache to ensure fresh scaled images
+            cacheDir.deleteRecursively()
+            cacheDir.mkdirs()
+
+            val frameFiles = mutableListOf<File>()
+
+            for ((index, fileName) in files.withIndex()) {
+                val frameFile = File(cacheDir, "frame_${index.toString().padStart(3, '0')}.png")
+
+                // Load, scale, and save the bitmap
+                assetManager.open("$assetFolder/$fileName").use { input ->
+                    val originalBitmap = BitmapFactory.decodeStream(input)
+                    if (originalBitmap != null) {
+                        val width = originalBitmap.width
+                        val height = originalBitmap.height
+
+                        // Calculate scale to fit within maxDimension
+                        val scale = if (width > maxDimension || height > maxDimension) {
+                            minOf(maxDimension.toFloat() / width, maxDimension.toFloat() / height)
+                        } else {
+                            1f
+                        }
+
+                        val scaledBitmap = if (scale < 1f) {
+                            val scaledWidth = (width * scale).toInt()
+                            val scaledHeight = (height * scale).toInt()
+                            Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, true)
+                        } else {
+                            originalBitmap
+                        }
+
+                        FileOutputStream(frameFile).use { output ->
+                            scaledBitmap.compress(Bitmap.CompressFormat.PNG, 80, output)
+                        }
+
+                        if (scaledBitmap != originalBitmap) {
+                            scaledBitmap.recycle()
+                        }
+                        originalBitmap.recycle()
+
+                        frameFiles.add(frameFile)
+                    }
+                }
+            }
+
+            Log.d(TAG, "Loaded ${frameFiles.size} frames from assets, gifId=$gifId, maxDimension=$maxDimension")
+
+            Result.success(Pair(ExtractionResult(frameFiles, frameFiles.size, 100), gifId))
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load frames from assets", e)
+            Result.failure(e)
+        }
+    }
 
     /**
      * Download GIF and extract frames
